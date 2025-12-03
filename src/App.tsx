@@ -27,8 +27,9 @@ export default function App() {
   const videoRef = useRef<HTMLVideoElement>(null)
 
   // Hero reveal sequence - perguntas aparecem e somem, depois headline + video
+  // Timings mais lentos para melhor leitura
   useEffect(() => {
-    const timings = [1500, 2000, 2000, 2000, 2000]
+    const timings = [2000, 2500, 2500, 2500, 2500]
     let timeout: ReturnType<typeof setTimeout>
 
     const advance = (stage: number) => {
@@ -125,7 +126,7 @@ export default function App() {
                   <p className="font-mono text-xs text-obsidian-400 uppercase tracking-[0.2em] mb-4">
                     Segundo Cérebro com IA
                   </p>
-                  <h1 className="font-display text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+                  <h1 className="font-display text-2xl md:text-4xl lg:text-5xl font-bold text-white leading-tight">
                     Você não precisa aprender mais.
                     <br />
                     <span className="text-obsidian-400">Precisa acessar o que já sabe.</span>
@@ -515,6 +516,50 @@ export default function App() {
           <p className="font-body text-sm text-gray-500 mt-6">
             Acesso imediato • 7 dias de garantia • Suporte especializado
           </p>
+        </div>
+      </section>
+
+      {/* =========================================
+          ALAN NICOLAS: Quem criou o método
+          ========================================= */}
+      <section className="py-24 px-4 md:px-6 bg-[#0a0a0a]">
+        <div className="max-w-5xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <p className="font-mono text-xs text-obsidian-400 uppercase tracking-[0.2em] mb-4">
+                Quem criou o método
+              </p>
+              <h2 className="font-display text-3xl md:text-4xl font-bold text-white mb-6">
+                Alan Nicolas
+              </h2>
+              <p className="font-body text-gray-400 text-lg mb-4">
+                Empresário, mentor e criador da Comunidade Lendária. Em 2021, largou tudo mesmo tendo conquistado o que muitos sonham — porque sua mente era um caos.
+              </p>
+              <p className="font-body text-gray-400 text-lg mb-4">
+                "Eu tinha lido mais de 100 livros. Feito dezenas de cursos. Salvado milhares de links. Mas quando eu precisava de algo específico... eu não conseguia achar."
+              </p>
+              <p className="font-body text-white text-lg font-medium">
+                Foi quando ele construiu seu Segundo Cérebro no Obsidian.
+              </p>
+            </div>
+
+            <div className="bg-[#161616] rounded-2xl p-8 border border-white/10">
+              <div className="space-y-8">
+                <div>
+                  <p className="font-mono text-xs text-gray-500 mb-1">Notas no vault</p>
+                  <p className="font-display text-5xl font-bold text-white">10.000+</p>
+                </div>
+                <div>
+                  <p className="font-mono text-xs text-gray-500 mb-1">Anos de conhecimento</p>
+                  <p className="font-display text-5xl font-bold text-white">10+</p>
+                </div>
+                <div>
+                  <p className="font-mono text-xs text-gray-500 mb-1">Tempo para encontrar qualquer coisa</p>
+                  <p className="font-display text-5xl font-bold text-obsidian-400">&lt;5s</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
