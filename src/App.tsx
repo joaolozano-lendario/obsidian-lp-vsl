@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Play, ArrowRight, Check, Shield, Volume2, VolumeX, Pause, Zap, Brain, Users, Clock, Star } from 'lucide-react'
 
 // Variante D: VSL-Centric com IMPACTO MÁXIMO
@@ -23,7 +23,26 @@ const LogoInfinito = ({ className = "", fill = "#fff" }: { className?: string; f
 export default function App() {
   const [isPlaying, setIsPlaying] = useState(false)
   const [isMuted, setIsMuted] = useState(false)
+  const [heroStage, setHeroStage] = useState(0)
   const videoRef = useRef<HTMLVideoElement>(null)
+
+  // Hero reveal sequence - perguntas aparecem e somem, depois headline + video
+  useEffect(() => {
+    const timings = [1500, 2000, 2000, 2000, 2000]
+    let timeout: ReturnType<typeof setTimeout>
+
+    const advance = (stage: number) => {
+      if (stage < 5) {
+        timeout = setTimeout(() => {
+          setHeroStage(stage + 1)
+          advance(stage + 1)
+        }, timings[stage])
+      }
+    }
+
+    advance(0)
+    return () => clearTimeout(timeout)
+  }, [])
 
   const handlePlayPause = () => {
     if (videoRef.current) {
@@ -61,35 +80,63 @@ export default function App() {
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-obsidian-600/15 blur-[150px] rounded-full pointer-events-none" />
 
         <div className="max-w-5xl w-full mx-auto relative z-10">
-          {/* Pre-video hook - DEDO NA FERIDA */}
+          {/* Pre-video hook - DEDO NA FERIDA - Perguntas que somem */}
           <div className="text-center mb-6 md:mb-8">
-            <div className="space-y-2 mb-8">
-              <p className="font-display text-lg md:text-2xl text-gray-400">
-                Quantos projetos você começou esse ano?
-              </p>
-              <p className="font-display text-lg md:text-2xl text-gray-500">
-                Quantos você terminou?
-              </p>
-              <p className="font-display text-lg md:text-2xl text-gray-600">
-                Qual foi a última coisa que você aprendeu?
-              </p>
-              <p className="font-display text-lg md:text-2xl text-white">
-                Consegue lembrar <span className="text-obsidian-400 font-semibold">agora</span>?
-              </p>
+            {/* Perguntas - aparecem uma de cada vez e somem */}
+            <div className={`transition-all duration-1000 ${heroStage >= 1 && heroStage < 2 ? 'opacity-100' : 'opacity-0'}`}>
+              {heroStage >= 1 && heroStage < 2 && (
+                <p className="font-display text-2xl md:text-4xl text-gray-400 leading-relaxed">
+                  Quantos projetos você começou esse ano?
+                </p>
+              )}
             </div>
-            {/* Product naming */}
-            <p className="font-mono text-xs text-obsidian-400 uppercase tracking-[0.2em] mb-4">
-              Segundo Cérebro com IA
-            </p>
-            <h1 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight">
-              Você não precisa aprender mais.
-              <br />
-              <span className="text-obsidian-400">Precisa acessar o que já sabe.</span>
-            </h1>
+
+            <div className={`transition-all duration-1000 ${heroStage >= 2 && heroStage < 3 ? 'opacity-100' : 'opacity-0'}`}>
+              {heroStage >= 2 && heroStage < 3 && (
+                <p className="font-display text-2xl md:text-4xl text-gray-500 leading-relaxed">
+                  Quantos você terminou?
+                </p>
+              )}
+            </div>
+
+            <div className={`transition-all duration-1000 ${heroStage >= 3 && heroStage < 4 ? 'opacity-100' : 'opacity-0'}`}>
+              {heroStage >= 3 && heroStage < 4 && (
+                <p className="font-display text-2xl md:text-4xl text-gray-600 leading-relaxed">
+                  Qual foi a última coisa que você aprendeu?
+                </p>
+              )}
+            </div>
+
+            <div className={`transition-all duration-1000 ${heroStage >= 4 && heroStage < 5 ? 'opacity-100' : 'opacity-0'}`}>
+              {heroStage >= 4 && heroStage < 5 && (
+                <p className="font-display text-2xl md:text-4xl text-white leading-relaxed">
+                  Consegue lembrar <span className="text-obsidian-400 font-bold">agora</span>?
+                </p>
+              )}
+            </div>
+
+            {/* Headline - aparece no final */}
+            <div className={`transition-all duration-1000 ${heroStage >= 5 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+              {heroStage >= 5 && (
+                <>
+                  <LogoDiamante className="w-16 h-16 mx-auto mb-8" fill="#fff" />
+
+                  {/* Product naming */}
+                  <p className="font-mono text-xs text-obsidian-400 uppercase tracking-[0.2em] mb-4">
+                    Segundo Cérebro com IA
+                  </p>
+                  <h1 className="font-display text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+                    Você não precisa aprender mais.
+                    <br />
+                    <span className="text-obsidian-400">Precisa acessar o que já sabe.</span>
+                  </h1>
+                </>
+              )}
+            </div>
           </div>
 
-          {/* Video Container - THE HERO */}
-          <div className="relative rounded-xl md:rounded-2xl overflow-hidden shadow-2xl shadow-obsidian-600/20 border border-white/10">
+          {/* Video Container - THE HERO - aparece junto com headline */}
+          <div className={`relative rounded-xl md:rounded-2xl overflow-hidden shadow-2xl shadow-obsidian-600/20 border border-white/10 transition-all duration-1000 ${heroStage >= 5 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             {/* Video element */}
             <video
               ref={videoRef}
